@@ -33,6 +33,7 @@ export default function RootLayout({
         <ThemeProvider>
           <SmoothScroll>
             <Navbar />
+
             {children}
           </SmoothScroll>
         </ThemeProvider>
