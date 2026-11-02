@@ -41,7 +41,6 @@ export function TestimonialsSection() {
           viewport={{ once: true, margin: "-100px" }}
           className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16"
         >
-          {/* Left Column: Content & CTA */}
           <motion.div
             variants={itemVariants}
             className="flex flex-col items-start lg:col-span-4"
@@ -65,7 +64,6 @@ export function TestimonialsSection() {
             </Link>
           </motion.div>
 
-          {/* Middle Column: Featured Active Testimonial */}
           <motion.div
             variants={itemVariants}
             className="relative h-112.5 overflow-hidden rounded-3xl shadow-xl md:h-137.5 lg:col-span-4"
@@ -86,7 +84,7 @@ export function TestimonialsSection() {
                   sizes="(max-width: 1024px) 100vw, 33vw"
                   className="object-cover"
                 />
-                {/* Gradient Overlay for text readability */}
+
                 <div className="absolute inset-0 bg-linear-to-t from-primary/95 via-primary/40 to-transparent" />
 
                 <div className="relative z-10 p-8">
@@ -104,7 +102,6 @@ export function TestimonialsSection() {
             </AnimatePresence>
           </motion.div>
 
-          {/* Right Column: Stacked Next Testimonials & Average */}
           <motion.div
             variants={itemVariants}
             className="flex flex-col gap-6 lg:col-span-4"
@@ -145,7 +142,6 @@ export function TestimonialsSection() {
               </AnimatePresence>
             </div>
 
-            {/* Average Rating Block */}
             <div className="flex items-center justify-center rounded-2xl bg-primary p-6 text-white shadow-md">
               <span className="text-xl font-bold">
                 Average rating: {testimonialsData.averageRating}
