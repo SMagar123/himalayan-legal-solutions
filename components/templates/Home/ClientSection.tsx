@@ -5,7 +5,7 @@ import { motion } from "motion/react"
 import { clientsData } from "@/lib/data/clients-data"
 import { Badge } from "@/components/ui/badge"
 import { containerVariants, itemVariants } from "@/lib/animations"
-import { AutoCarousel } from "@/components/molecules/AutoCarousel" // Adjust path if needed
+import { AutoCarousel } from "@/components/molecules/AutoCarousel"
 
 export function ClientsSection() {
   return (
@@ -28,14 +28,18 @@ export function ClientsSection() {
             </h2>
           </motion.div>
 
-          {/* Carousel Section */}
-          <motion.div variants={itemVariants} className="w-full">
+          {/* Carousel Section - Added data-lenis-prevent here */}
+          <motion.div
+            variants={itemVariants}
+            className="w-full"
+            data-lenis-prevent
+          >
             <AutoCarousel
               items={clientsData.clients}
               transition="marquee"
               autoPlay={true}
               marqueeSpeed={90}
-              marqueeGap="4rem" // Spacing between logos
+              marqueeGap="4rem"
               showGradientMask={true}
               gradientWidth="10%"
               pauseOnHover={false}
@@ -46,7 +50,7 @@ export function ClientsSection() {
                     src={client.logoUrl}
                     alt={client.name}
                     fill
-                    sizes="(max-width: 768px) 160px, 192px"
+                    sizes="(max-width: 768px) 160px, (max-width: 1024px) 256px, 288px"
                     className="object-cover"
                   />
                 </div>

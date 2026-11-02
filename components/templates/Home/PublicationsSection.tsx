@@ -63,7 +63,7 @@ export function PublicationsSection() {
                 <Link href={publicationsData.viewAllLink}>
                   <Button
                     variant="outline"
-                    className="group rounded-full border-primary px-6 text-primary transition-colors hover:bg-primary hover:text-white"
+                    className="group cursor-pointer rounded-full border-primary px-6 text-primary transition-colors duration-500 ease-in-out hover:bg-primary hover:text-white"
                   >
                     View All Publications
                     <ArrowUpRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -72,8 +72,8 @@ export function PublicationsSection() {
 
                 {/* Navigation Buttons (Desktop) */}
                 <div className="hidden gap-2 lg:flex">
-                  <CarouselPrevious className="static h-10 w-10 translate-y-0 border-primary text-primary transition-colors hover:bg-primary hover:text-white" />
-                  <CarouselNext className="static h-10 w-10 translate-y-0 border-primary text-primary transition-colors hover:bg-primary hover:text-white" />
+                  <CarouselPrevious className="static h-10 w-10 translate-y-0 cursor-pointer border-primary text-primary transition-colors duration-500 ease-in-out hover:bg-primary hover:text-white" />
+                  <CarouselNext className="static h-10 w-10 translate-y-0 cursor-pointer border-primary text-primary transition-colors duration-500 ease-in-out hover:bg-primary hover:text-white" />
                 </div>
               </div>
             </div>
