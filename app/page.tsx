@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/organisms/Hero/HeroSection"
 import { AboutSection } from "@/components/templates/Home/AboutSection"
 import { ClientsSection } from "@/components/templates/Home/ClientSection"
+import { ContactSection } from "@/components/templates/Home/ContactSection"
 import { FaqsSection } from "@/components/templates/Home/FAQSection"
 import { PracticeAreasSection } from "@/components/templates/Home/PracticeAreasSection"
 import { PublicationsSection } from "@/components/templates/Home/PublicationsSection"
@@ -18,6 +19,7 @@ export default function Page() {
       <ClientsSection />
       <PublicationsSection />
       <FaqsSection />
+      <ContactSection />
     </div>
   )
 }
