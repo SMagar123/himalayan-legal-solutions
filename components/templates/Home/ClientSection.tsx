@@ -38,7 +38,7 @@ export function ClientsSection() {
               marqueeGap="4rem" // Spacing between logos
               showGradientMask={true}
               gradientWidth="10%"
-              pauseOnHover={true}
+              pauseOnHover={false}
               draggable={false}
               renderItem={(client) => (
                 <div className="relative flex h-40 w-40 items-center justify-center overflow-hidden rounded-xl border transition-all duration-300 md:h-52 md:w-64 lg:h-64 lg:w-72">
