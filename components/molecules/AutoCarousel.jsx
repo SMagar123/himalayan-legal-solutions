@@ -14,6 +14,7 @@ import {
 
 const EFFECT_MIN_ITEMS = 3
 
+// --- Main Component Dispatcher ---
 export function AutoCarousel(props) {
   const { transition = "fade" } = props
   if (transition === "marquee") return <MarqueeCarousel {...props} />
@@ -24,6 +25,7 @@ export function AutoCarousel(props) {
   )
 }
 
+// --- Helper Hook ---
 function useEffectiveLoop({ count, onlyEffectWhenNeeded, loop, autoPlay }) {
   if (!onlyEffectWhenNeeded) return { loop, autoPlay }
   const hasEnoughItems = count > EFFECT_MIN_ITEMS
@@ -33,6 +35,7 @@ function useEffectiveLoop({ count, onlyEffectWhenNeeded, loop, autoPlay }) {
   }
 }
 
+// --- Fade Carousel ---
 function FadeCarousel({
   items,
   renderItem,
@@ -172,6 +175,7 @@ function FadeCarousel({
   )
 }
 
+// --- Slide Carousel ---
 function SlideCarousel({
   items,
   renderItem,
@@ -304,6 +308,7 @@ function SlideCarousel({
   )
 }
 
+// --- Marquee Carousel ---
 function MarqueeCarousel({
   items,
   renderItem,
@@ -544,7 +549,6 @@ function MarqueeCarousel({
   return (
     <div
       className={cn("relative flex w-full flex-col", className)}
-      // Removed the hover pause triggers when the carousel is static
       onMouseEnter={() =>
         !isStatic && pauseOnHover && (isHoverPausedRef.current = true)
       }
@@ -559,24 +563,23 @@ function MarqueeCarousel({
 
       <div
         className={cn(
-          "relative w-full py-16 lg:py-20",
-          // Allow normal scrolling if it's static and small screens might overflow
+          "relative w-full",
           isStatic ? "overflow-x-auto" : "overflow-hidden",
           gradientMaskClassName
         )}
         style={maskStyle}
+        data-lenis-prevent
       >
         <div
           ref={scrollerRef}
           data-lenis-prevent={!isStatic || undefined}
           className={cn(
-            "auto-carousel-marquee-track flex w-full",
+            "auto-carousel-marquee-track flex w-full touch-pan-y",
             !isStatic && "overflow-hidden",
-            // Center the items if the carousel is static (1-3 items)
             isStatic && "min-w-full justify-center",
             draggable &&
               !isStatic &&
-              "cursor-grab touch-pan-x select-none active:cursor-grabbing"
+              "cursor-grab select-none active:cursor-grabbing"
           )}
           style={{ gap: marqueeGap, scrollBehavior: "auto" }}
           onPointerDown={handlePointerDown}
@@ -600,6 +603,8 @@ function MarqueeCarousel({
     </div>
   )
 }
+
+// --- Dot Controls ---
 function DotControls({ count, selected, onSelect }) {
   return (
     <div className="my-4 flex justify-center gap-2">
@@ -609,7 +614,7 @@ function DotControls({ count, selected, onSelect }) {
           onClick={() => onSelect(i)}
           className={cn(
             "h-2 w-2 rounded-full transition-colors",
-            i === selected ? "bg-primary-red" : "bg-black"
+            i === selected ? "bg-primary" : "bg-gray-300"
           )}
           aria-label={`Go to slide ${i + 1}`}
         />
