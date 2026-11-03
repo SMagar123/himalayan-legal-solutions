@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { SmoothScroll } from "@/components/molecules/SmoothScroll"
 import { Navbar } from "@/components/organisms/Navbar/Navbar"
 import { cn } from "@/lib/utils"
+import { Footer } from "@/components/organisms/Footer"
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -35,6 +36,7 @@ export default function RootLayout({
             <Navbar />
 
             {children}
+            <Footer />
           </SmoothScroll>
         </ThemeProvider>
       </body>

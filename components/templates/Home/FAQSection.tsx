@@ -69,10 +69,10 @@ export function FaqsSection() {
 function FaqItem({ faq }: { faq: any }) {
   return (
     <motion.div variants={itemVariants} className="w-full">
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion className="w-full">
         <AccordionItem
           value={faq.id}
-          className="overflow-hidden rounded-3xl border border-gray-200 px-6 transition-colors duration-300 data-[state=open]:bg-gray-50/50 md:px-8"
+          className="overflow-hidden rounded-3xl px-6 transition-colors duration-300 data-[state=open]:bg-gray-50/50 md:px-8"
         >
           {/* Default Shadcn AccordionTrigger (Chevron included automatically) */}
           <AccordionTrigger className="py-6 text-left hover:no-underline">
