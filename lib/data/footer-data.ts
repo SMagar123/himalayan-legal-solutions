@@ -1,6 +1,6 @@
 export const footerData = {
   logo: {
-    name: "Pearson",
+    name: "Himalayan Legal Solutions",
     href: "/",
   },
   about: {

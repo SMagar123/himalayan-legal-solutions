@@ -46,7 +46,7 @@ export function Footer() {
             {/* Column 1: Logo & About */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-col items-start pr-0 lg:col-span-4 lg:pr-8"
+              className="flex flex-col items-start pr-0 lg:col-span-5 lg:pr-8"
             >
               <Link
                 href={footerData.logo.href}
@@ -55,7 +55,7 @@ export function Footer() {
                 <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary transition-transform duration-300 group-hover:scale-105">
                   <Scale className="h-5 w-5" />
                 </div>
-                <span className="font-serif text-3xl font-semibold tracking-wide text-white">
+                <span className="text-3xl font-semibold tracking-wide text-white">
                   {footerData.logo.name}
                 </span>
               </Link>
@@ -118,7 +118,7 @@ export function Footer() {
             {/* Column 4: Socials, Hours & Contact */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-col gap-8 lg:col-span-4"
+              className="flex flex-col gap-8 lg:col-span-3"
             >
               <div>
                 <h3 className="mb-4 text-lg font-bold">
