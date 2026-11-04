@@ -40,15 +40,22 @@ export default function PublicationsPage() {
   return (
     <div className="min-h-screen bg-white lg:pb-16">
       <div className="container mx-auto px-4 md:px-8">
-        {/* Page Title */}
+        {/* Page Title & Description */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16 text-center"
+          className="mb-16 flex flex-col items-center text-center"
         >
           <h1 className="inline-block border-b-4 border-[#0E4A66] pb-2 text-4xl font-bold text-[#0E4A66] md:text-5xl">
             {publicationsPageData.title}
           </h1>
+          <p className="mt-6 max-w-4xl text-base leading-relaxed text-gray-600 md:text-lg">
+            Explore our collection of legal publications, research, and insights
+            covering Nepalese laws, regulatory developments, and contemporary
+            legal issues. Stay informed through thoughtful analysis and
+            practical guidance on matters shaping the legal and business
+            landscape.
+          </p>
         </motion.div>
 
         {/* Publications Grid */}

@@ -7,6 +7,8 @@ import { Navbar } from "@/components/organisms/Navbar/Navbar"
 import { cn } from "@/lib/utils"
 import { Footer } from "@/components/organisms/Footer"
 import { BreadcrumbNav } from "@/components/molecules/BreadCrumbNav"
+import { ScrollToTop } from "@/components/molecules/ScrollToTop"
+import { ScrollToTopButton } from "@/components/organisms/ScrollToTopButton"
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -34,10 +36,12 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <SmoothScroll>
+            <ScrollToTop />
             <Navbar />
             <BreadcrumbNav />
 
             {children}
+            <ScrollToTopButton />
             <Footer />
           </SmoothScroll>
         </ThemeProvider>

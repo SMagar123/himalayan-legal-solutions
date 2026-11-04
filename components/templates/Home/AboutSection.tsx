@@ -9,7 +9,6 @@ import { AnimatedCounter } from "@/components/molecules/AnimatedCounter"
 import { itemVariants, containerVariants } from "@/lib/animations"
 import Image from "next/image"
 
-// Map string icon names to actual Lucide components
 const IconMap = {
   Phone: Phone,
   Clock: Clock,
@@ -28,11 +27,11 @@ export function AboutSection() {
           className="mx-auto flex max-w-full flex-col gap-16"
         >
           {/* Top Section: Image & Content */}
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-20">
+          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-20">
             {/* Left: Image with Glassmorphism Card */}
             <motion.div
               variants={itemVariants}
-              className="relative h-[400px] w-full overflow-hidden rounded-3xl shadow-2xl md:h-[500px]"
+              className="relative h-100 w-full overflow-hidden rounded-3xl shadow-2xl md:h-125"
             >
               <Image
                 src={aboutData.image}
@@ -40,10 +39,8 @@ export function AboutSection() {
                 fill
                 className="object-cover"
               />
-              {/* Dark overlay for readability */}
               <div className="absolute inset-0 bg-black/20" />
 
-              {/* Floating Glass Card */}
               <div className="absolute right-4 bottom-4 left-4 flex flex-col items-start gap-6 rounded-2xl border border-white/20 bg-black/40 p-6 backdrop-blur-md md:right-8 md:bottom-8 md:left-8 md:flex-row md:items-center md:p-8">
                 <div className="flex shrink-0 flex-col">
                   <span className="font-serif text-5xl leading-none text-white md:text-6xl">
@@ -53,7 +50,7 @@ export function AboutSection() {
                     {aboutData.stats.label}
                   </span>
                 </div>
-                <div className="hidden h-16 w-[1px] bg-white/20 md:block" />
+                <div className="hidden h-16 w-px bg-white/20 md:block" />
                 <p className="text-xs leading-relaxed text-white/80 md:text-sm">
                   {aboutData.stats.description}
                 </p>
@@ -67,7 +64,7 @@ export function AboutSection() {
             >
               <Badge
                 variant="outline"
-                className="mb-6 rounded-full border-primary px-4 py-1.5 text-sm font-semibold text-primary lg:py-6 lg:text-xl"
+                className="mb-4 rounded-md border-primary px-6 py-5 text-sm font-semibold text-primary lg:text-lg"
               >
                 {aboutData.badge}
               </Badge>
@@ -77,29 +74,37 @@ export function AboutSection() {
               </h2>
 
               <Tabs defaultValue={aboutData.tabs[0].id} className="w-full">
-                <TabsList className="mb-8 h-auto w-full justify-start gap-2 overflow-x-auto rounded-none bg-transparent p-0 md:gap-4">
+                <TabsList className="mb-3 flex h-auto w-full scrollbar-none justify-start gap-2 overflow-x-auto rounded-none bg-transparent p-0 pb-2 [-ms-overflow-style:none] md:gap-4 [&::-webkit-scrollbar]:hidden">
                   {aboutData.tabs.map((tab) => (
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="rounded-full border-transparent px-6 py-2.5 text-base font-medium whitespace-nowrap text-gray-500 transition-all duration-300 hover:bg-gray-100 hover:text-gray-900 md:text-lg data-active:bg-primary! data-active:text-white! data-active:shadow-md"
+                      className="shrink-0 rounded-full border-transparent px-6 py-3 text-base font-medium whitespace-nowrap text-gray-500 transition-all duration-300 hover:bg-gray-100 hover:text-gray-900 md:text-lg data-active:bg-primary! data-active:text-white! data-active:shadow-md"
                     >
                       {tab.label}
                     </TabsTrigger>
                   ))}
                 </TabsList>
-                {aboutData.tabs.map((tab) => (
-                  <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                    <motion.p
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.4 }}
-                      className="text-sm leading-relaxed text-gray-600 md:text-base"
-                    >
-                      {tab.content}
-                    </motion.p>
-                  </TabsContent>
-                ))}
+
+                {/* 
+                  Fix: Added min-h-[180px] to this container.
+                  This reserves the space so the page doesn't jump 
+                  when switching between short and long descriptions.
+                */}
+                <div className="relative min-h-45">
+                  {aboutData.tabs.map((tab) => (
+                    <TabsContent key={tab.id} value={tab.id} className="mt-0">
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className="text-sm leading-relaxed text-gray-600 md:text-base"
+                      >
+                        {tab.content}
+                      </motion.p>
+                    </TabsContent>
+                  ))}
+                </div>
               </Tabs>
             </motion.div>
           </div>

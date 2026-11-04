@@ -11,18 +11,13 @@ export const navItems: NavItem[] = [
     submenu: [
       {
         title: "Our Firm",
-        href: "/about",
+        href: "/about/our-firm",
         description: "Learn about our history and values.",
       },
       {
         title: "Our Team",
-        href: "/team",
+        href: "/about/our-team",
         description: "Meet our experienced attorneys.",
-      },
-      {
-        title: "Careers",
-        href: "/careers",
-        description: "Join our growing team.",
       },
     ],
   },
