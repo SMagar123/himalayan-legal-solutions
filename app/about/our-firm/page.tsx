@@ -127,7 +127,7 @@ export default function OurFirmPage() {
             variants={itemVariants}
             className="relative z-10 max-w-2xl rounded-3xl bg-white/80 p-8 text-center backdrop-blur-sm"
           >
-            <h2 className="mb-6 font-serif text-3xl font-bold text-gray-900 md:text-4xl">
+            <h2 className="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">
               {ourFirmData.showcase.heading}
             </h2>
             <p className="text-sm leading-relaxed text-gray-600 md:text-base">

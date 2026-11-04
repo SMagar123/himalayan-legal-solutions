@@ -39,7 +39,7 @@ export function ContactSection() {
           {/* Right Side: Form Container */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col justify-center rounded-3xl border border-gray-200 bg-white p-8 shadow-sm md:p-12 lg:p-16"
+            className="flex flex-col justify-center rounded-3xl border border-gray-200 bg-white p-8 shadow-sm md:p-10"
           >
             {/* Header */}
             <div className="mb-10 text-center">

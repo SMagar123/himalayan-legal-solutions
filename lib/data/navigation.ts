@@ -25,6 +25,7 @@ export const navItems: NavItem[] = [
   {
     title: "Services",
     submenu: [
+      { title: "All Services", href: "/services" },
       { title: "Corporate Law", href: "/services/corporate" },
       { title: "Litigation", href: "/services/litigation" },
       { title: "Real Estate", href: "/services/real-estate" },
