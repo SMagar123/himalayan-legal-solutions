@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { motion, useScroll, useMotionValueEvent } from "motion/react"
 import { NavLogo } from "./NavbarLogo"
 import { DesktopNav } from "./DesktopNav"
@@ -12,6 +13,7 @@ import { cn } from "@/lib/utils"
 export function Navbar() {
   const { scrollY } = useScroll()
   const [isScrolled, setIsScrolled] = useState(false)
+  const pathname = usePathname()
 
   // Lenis / Scroll listener to trigger navbar bg change
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -22,6 +24,14 @@ export function Navbar() {
     }
   })
 
+  // Check if current page is the homepage
+  const isHomePage = pathname === "/"
+
+  // Determine background based on scroll AND pathname
+  // If it's the homepage and not scrolled, be transparent.
+  // Otherwise, use the solid primary color.
+  const isTransparent = isHomePage && !isScrolled
+
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
@@ -29,9 +39,9 @@ export function Navbar() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={cn(
         "fixed top-0 right-0 left-0 z-50 transition-all duration-500 ease-in-out",
-        isScrolled
-          ? "bg-primary/95 py-3 shadow-lg backdrop-blur-md"
-          : "bg-primary/95 py-6"
+        isTransparent
+          ? "bg-transparent py-6"
+          : "bg-primary/95 py-3 shadow-lg backdrop-blur-md"
       )}
     >
       <div className="container mx-auto flex items-center justify-between px-4 md:px-6">
