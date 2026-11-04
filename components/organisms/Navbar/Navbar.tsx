@@ -9,6 +9,7 @@ import { MobileNav } from "./MobileNav"
 import { Button } from "@/components/ui/button"
 import { FileEdit } from "lucide-react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 export function Navbar() {
   const { scrollY } = useScroll()
@@ -59,9 +60,10 @@ export function Navbar() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="hidden md:block"
           >
-            <Button
+            <Link
+              href="/free-consultation"
               className={cn(
-                "gap-2 rounded-full px-6 font-semibold transition-all duration-300",
+                "flex items-center gap-2 rounded-full px-6 py-1.5 font-semibold transition-all duration-300",
                 isScrolled
                   ? "bg-white text-primary shadow-md hover:bg-gray-100"
                   : "bg-white text-primary shadow-lg hover:-translate-y-0.5 hover:bg-gray-100 hover:shadow-xl"
@@ -69,7 +71,7 @@ export function Navbar() {
             >
               <FileEdit className="h-4 w-4" />
               Free Consultation
-            </Button>
+            </Link>
           </motion.div>
 
           <MobileNav />
