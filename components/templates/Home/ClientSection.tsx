@@ -9,7 +9,7 @@ import { AutoCarousel } from "@/components/molecules/AutoCarousel"
 
 export function ClientsSection() {
   return (
-    <section className="overflow-hidden bg-white py-24">
+    <section className="overflow-hidden  bg-white py-24">
       <div className="container mx-auto px-4 md:px-8">
         <div className="mx-auto flex max-w-full flex-col items-center">
           {/* Header Section */}
@@ -31,7 +31,7 @@ export function ClientsSection() {
           {/* Carousel Section - Added data-lenis-prevent here */}
           <motion.div
             variants={itemVariants}
-            className="w-full"
+            className="w-full pointer-events-none"
             data-lenis-prevent
           >
             <AutoCarousel
