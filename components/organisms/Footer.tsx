@@ -1,14 +1,16 @@
 "use client"
 
-import dynamic from "next/dynamic" // Import dynamic
+import dynamic from "next/dynamic"
 import Link from "next/link"
+import Image from "next/image" // Imported Image
 import { motion } from "motion/react"
-import { MapPin, Phone, Mail, Scale, Loader2 } from "lucide-react"
+import { MapPin, Phone, Mail, Loader2 } from "lucide-react" // Removed Scale
 import { FaFacebookF, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa"
 import { FaXTwitter } from "react-icons/fa6"
 
 import { footerData } from "@/lib/data/footer-data"
 import { containerVariants, itemVariants } from "@/lib/animations"
+
 const GoogleMap = dynamic(
   () => import("@/components/molecules/GoogleMap").then((mod) => mod.GoogleMap),
   {
@@ -31,7 +33,7 @@ const IconMap = {
 
 export function Footer() {
   return (
-    <footer className="overflow-hidden bg-primary pt-20 pb-8 text-white">
+    <footer className="overflow-hidden bg-primary pt-8 pb-8 text-white md:pt-12 lg:pt-18">
       <div className="container mx-auto px-4 md:px-8">
         <motion.div
           variants={containerVariants}
@@ -46,16 +48,20 @@ export function Footer() {
               variants={itemVariants}
               className="flex flex-col items-start pr-0 lg:col-span-5 lg:pr-8"
             >
+              {/* Logo Image Only */}
               <Link
                 href={footerData.logo.href}
-                className="group mb-6 flex items-center gap-3"
+                className="group mb-6 inline-block transition-transform duration-300 hover:scale-105"
               >
-                <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-white text-primary transition-transform duration-300 group-hover:scale-105">
-                  <Scale className="h-5 w-5" />
+                <div className="relative h-15 w-48 md:h-30 md:w-72">
+                  <Image
+                    src="/logo.png"
+                    alt="Himalayan Legal Solutions Logo"
+                    fill
+                    sizes="(max-width: 768px) 192px, 256px"
+                    className="object-cover"
+                  />
                 </div>
-                <span className="text-3xl font-semibold tracking-wide text-white">
-                  {footerData.logo.name}
-                </span>
               </Link>
 
               <h3 className="mb-3 text-lg font-bold">

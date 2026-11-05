@@ -41,8 +41,8 @@ export function Navbar() {
       className={cn(
         "fixed top-0 right-0 left-0 z-50 transition-all duration-500 ease-in-out",
         isTransparent
-          ? "bg-transparent py-6"
-          : "bg-primary/95 py-3 shadow-lg backdrop-blur-md"
+          ? "bg-transparent py-3 lg:py-2"
+          : "bg-primary/95 py-2 shadow-lg backdrop-blur-md lg:py-0.5"
       )}
     >
       <div className="container mx-auto flex items-center justify-between px-4 md:px-6">

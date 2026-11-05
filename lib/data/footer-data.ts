@@ -4,9 +4,9 @@ export const footerData = {
     href: "/",
   },
   about: {
-    title: "About Lorem Ipsum xyz",
+    title: "About Himalayan Legal Solutions",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Scelerisque id condimentum a dui adipiscing urna gravida scelerisque risus.",
+      "At Himalayan Legal Solutions, we provide thoughtful legal counsel and dependable representation, guided by integrity, diligence, and an unwavering commitment to protecting our clients' interests.",
     // Replace with your actual map image or a static export from Google Maps
     mapEmbedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.256960627544!2d85.3246933150619!3d27.7171629827883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb190000000000%3A0x0!2zTmFyYXlhbmFnb3BhbCBDaG93aywgS2F0aG1hbmR1!5e0!3m2!1sen!2snp!4v1620000000000!5m2!1sen!2snp",
