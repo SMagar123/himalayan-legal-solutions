@@ -44,7 +44,7 @@ export default function PracticeAreasPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-16 flex flex-col items-center text-center"
         >
-          <h1 className="inline-block border-b-4 border-[#0E4A66] pb-2 text-4xl font-bold text-[#0E4A66] md:text-5xl">
+          <h1 className="inline-block border-b-[3px] border-[#0E4A66] pb-1 text-3xl font-bold text-[#0E4A66] md:text-4xl">
             {practiceAreasPageData.title}
           </h1>
           <p className="mt-6 max-w-4xl text-base leading-relaxed text-gray-600 md:text-lg">
