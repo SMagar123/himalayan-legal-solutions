@@ -9,12 +9,10 @@ import { FaXTwitter } from "react-icons/fa6"
 
 import { footerData } from "@/lib/data/footer-data"
 import { containerVariants, itemVariants } from "@/lib/animations"
-
-// Dynamically import the map component with a loading skeleton
 const GoogleMap = dynamic(
   () => import("@/components/molecules/GoogleMap").then((mod) => mod.GoogleMap),
   {
-    ssr: false, // Prevents server-side rendering errors
+    ssr: false,
     loading: () => (
       <div className="flex h-50 w-full animate-pulse items-center justify-center rounded-md border border-white/10 bg-white/10">
         <Loader2 className="h-6 w-6 animate-spin text-white/50" />

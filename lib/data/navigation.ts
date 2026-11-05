@@ -34,9 +34,10 @@ export const navItems: NavItem[] = [
   {
     title: "Practice Areas",
     submenu: [
-      { title: "Family Law", href: "/practice/family" },
-      { title: "Criminal Defense", href: "/practice/criminal" },
-      { title: "Intellectual Property", href: "/practice/ip" },
+      { title: "Our Practices", href: "/practice-area" },
+      { title: "Family Law", href: "/practice-area/family" },
+      { title: "Criminal Defense", href: "/practice-area/criminal" },
+      { title: "Intellectual Property", href: "/practice-area/ip" },
     ],
   },
   { title: "Contact", href: "/contact" },

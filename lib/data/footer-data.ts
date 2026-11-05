@@ -36,7 +36,7 @@ export const footerData = {
     },
   ],
   socials: {
-    title: "Subscribe to our social media pages",
+    title: "Follow Us",
     links: [
       { name: "Facebook", href: "#", icon: "Facebook" },
       { name: "TikTok", href: "#", icon: "TikTok" },
