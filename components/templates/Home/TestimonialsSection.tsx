@@ -19,7 +19,7 @@ export function TestimonialsSection() {
       setActiveIndex(
         (prev) => (prev + 1) % testimonialsData.testimonials.length
       )
-    }, 3000)
+    }, 5000)
     return () => clearInterval(interval)
   }, [])
 
