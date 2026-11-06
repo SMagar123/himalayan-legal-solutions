@@ -3,16 +3,10 @@
 import Link from "next/link"
 import { motion, AnimatePresence } from "motion/react"
 import { ChevronDown } from "lucide-react"
-import { NavItem as NavItemType } from "@/lib/navigation"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
-interface NavItemProps {
-  item: NavItemType
-  isScrolled: boolean
-}
-
-export function NavItem({ item, isScrolled }: NavItemProps) {
+export function NavItem({ item, isScrolled }) {
   const pathname = usePathname()
   const isActive =
     pathname === item.href ||
