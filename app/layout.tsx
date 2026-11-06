@@ -2,7 +2,6 @@ import type { Metadata } from "next" // Import Metadata type
 import { Geist_Mono, Outfit, Lexend } from "next/font/google"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import { SmoothScroll } from "@/components/molecules/SmoothScroll"
 import { Navbar } from "@/components/organisms/Navbar/Navbar"
 import { cn } from "@/lib/utils"
@@ -103,18 +102,16 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
-          <SmoothScroll>
-            <ScrollToTop />
-            <Navbar />
+        <SmoothScroll>
+          <ScrollToTop />
+          <Navbar />
 
-            <BreadcrumbNav />
+          <BreadcrumbNav />
 
-            {children}
-            <ScrollToTopButton />
-            <Footer />
-          </SmoothScroll>
-        </ThemeProvider>
+          {children}
+          <ScrollToTopButton />
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   )
