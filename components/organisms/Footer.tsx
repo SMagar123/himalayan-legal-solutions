@@ -193,7 +193,11 @@ export function Footer() {
           <div className="mb-6 h-px w-full bg-white/20" />
 
           <motion.div variants={itemVariants} className="text-center">
-            <p className="text-sm text-white/80">{footerData.copyright}</p>
+            <p className="text-sm text-white/80">
+              {" "}
+              © {new Date().getFullYear()} Himalayan Legal Solutions. All rights
+              reserved.
+            </p>
           </motion.div>
         </motion.div>
       </div>
