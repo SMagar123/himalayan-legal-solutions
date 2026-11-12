@@ -44,17 +44,20 @@ export async function savePublicationAction(
     return { error: "Failed to save. Please try again." }
   }
 
-  redirect("/admin/publications")
+  revalidatePath("/admin/publications")
+  revalidatePath("/publications")
+
+  // ✅ Return success instead of redirecting
+  return { success: true }
 }
 
 export async function updatePublicationAction(
-  prevState: any, // ✅ No more id parameter
+  prevState: any,
   formData: FormData
 ) {
   const session = await getSession()
   if (!session.isLoggedIn) return { error: "Unauthorized" }
 
-  // ✅ Read id from form data
   const id = formData.get("id") as string
   const title = formData.get("title") as string
   const slug = formData.get("slug") as string
@@ -91,5 +94,7 @@ export async function updatePublicationAction(
 
   revalidatePath("/admin/publications")
   revalidatePath(`/publications/${slug}`)
-  redirect("/admin/publications")
+
+  // ✅ Return success instead of redirecting
+  return { success: true }
 }

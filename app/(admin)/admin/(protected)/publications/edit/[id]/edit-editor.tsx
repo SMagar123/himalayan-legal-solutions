@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation" // ✅ NEW
 import { useCreateBlockNote } from "@blocknote/react"
 import { BlockNoteView } from "@blocknote/mantine"
-import "@blocknote/core/fonts/inter.css"
 import "@blocknote/mantine/style.css"
+import { toast } from "sonner" // ✅ NEW
 import { uploadImageAction } from "../../UploadActions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -51,8 +52,21 @@ export function EditPublicationEditor({
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(true)
   const [coverImage, setCoverImage] = useState(initialCoverImage)
 
-  // ✅ NO .bind() — pass the action directly
+  const router = useRouter()
   const [state, formAction] = useActionState(updatePublicationAction, null)
+
+  useEffect(() => {
+    if (state?.success) {
+      toast.success("Publication updated successfully!")
+      router.push("/admin/publications")
+    }
+  }, [state, router])
+
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error)
+    }
+  }, [state])
 
   let initialContent = undefined
   try {
@@ -99,12 +113,12 @@ export function EditPublicationEditor({
     <div className="mx-auto max-w-5xl space-y-8 p-6">
       <h1 className="text-3xl font-bold text-primary">Edit Publication</h1>
 
+      {/* Keep inline error too, in case user misses the toast */}
       {state?.error && (
         <div className="rounded bg-red-50 p-3 text-red-600">{state.error}</div>
       )}
 
       <form action={handleFormSubmit} className="space-y-6">
-        {/* ✅ Hidden ID — this is the key fix */}
         <input type="hidden" name="id" value={id} />
         <input type="hidden" name="coverImage" value={coverImage} />
 
@@ -170,7 +184,7 @@ export function EditPublicationEditor({
 
         <div className="space-y-2">
           <Label>Content</Label>
-          <div className="min-h-[500px] rounded-lg border bg-white p-4">
+          <div className="min-h-125 rounded-lg border bg-white p-4">
             <BlockNoteView editor={editor} theme="light" />
           </div>
         </div>

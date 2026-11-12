@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description:
     "A team of highly skilled legal professionals equipped to navigate complex cross-border commercial transactions and resolve sophisticated legal disputes in Nepal.",
 }
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -23,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={outfit.variable}>
-      <body className="font-(family-name:--font-inter) antialiased">
+      <body className="font-sans antialiased">
         {children}
         <Toaster position="bottom-right" richColors />
       </body>
