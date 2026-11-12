@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Outfit } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "sonner"
@@ -9,6 +9,11 @@ export const metadata: Metadata = {
   title: "Himalayan Legal Solutions",
   description:
     "A team of highly skilled legal professionals equipped to navigate complex cross-border commercial transactions and resolve sophisticated legal disputes in Nepal.",
+}
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  interactiveWidget: "resizes-content",
 }
 
 export default function RootLayout({

@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { AdminShell } from "./AdminShell"
+import "./layout.css"
 
 export default async function AdminLayout({
   children,
