@@ -162,3 +162,10 @@
     animation: none !important;
   }
 }
+
+.bn-container,
+.bn-container *,
+.bn-editor,
+.bn-editor * {
+  font-family: var(--font-sans), sans-serif !important;
+}

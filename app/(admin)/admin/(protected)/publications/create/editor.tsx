@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { useCreateBlockNote } from "@blocknote/react"
 import { BlockNoteView } from "@blocknote/mantine"
-import "@blocknote/core/fonts/inter.css"
 import "@blocknote/mantine/style.css"
+import { toast } from "sonner"
 import { uploadImageAction } from "../UploadActions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -30,7 +31,24 @@ export function PublicationEditor() {
   const [slug, setSlug] = useState("")
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false)
   const [coverImage, setCoverImage] = useState<string>("")
+
+  const router = useRouter()
   const [state, formAction] = useActionState(savePublicationAction, null)
+
+  // ✅ Handle success: show toast then redirect
+  useEffect(() => {
+    if (state?.success) {
+      toast.success("Publication created successfully!")
+      router.push("/admin/publications")
+    }
+  }, [state, router])
+
+  // ✅ Handle error toast
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error)
+    }
+  }, [state])
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -45,7 +63,6 @@ export function PublicationEditor() {
     }
   }, [title, slugManuallyEdited])
 
-  // Custom Image Upload for BlockNote
   const handleImageUpload = async (file: File): Promise<string> => {
     const formData = new FormData()
     formData.append("file", file)
@@ -56,14 +73,11 @@ export function PublicationEditor() {
     throw new Error("Upload failed")
   }
 
-  // Initialize BlockNote editor with the custom upload function
   const editor = useCreateBlockNote({
     uploadFile: handleImageUpload,
   })
 
-  // Convert Blocks to JSON string before submitting the form
   const handleFormAction = (formData: FormData) => {
-    // Get current blocks from editor
     const blocks = editor.document
     formData.append("content", JSON.stringify(blocks))
     return formAction(formData)
@@ -84,6 +98,7 @@ export function PublicationEditor() {
     <div className="mx-auto max-w-5xl space-y-8 p-6">
       <h1 className="text-3xl font-bold text-primary">Create Publication</h1>
 
+      {/* Keep inline error too */}
       {state?.error && (
         <div className="rounded bg-red-50 p-3 text-red-600">{state.error}</div>
       )}
@@ -160,7 +175,6 @@ export function PublicationEditor() {
           </div>
         </div>
 
-        {/* BlockNote Editor */}
         <div className="space-y-2">
           <Label>Content</Label>
           <div className="min-h-[500px] rounded-lg border bg-white p-4">
