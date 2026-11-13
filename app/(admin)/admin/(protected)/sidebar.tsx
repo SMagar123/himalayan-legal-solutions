@@ -12,11 +12,13 @@ import {
   Home,
   ChevronLeft,
   ChevronRight,
+  Settings,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/admin/services", label: "Services", icon: Settings },
   { href: "/admin/practice-areas", label: "Practice Areas", icon: BookOpen },
   { href: "/admin/publications", label: "Publications", icon: FileText },
 ]
