@@ -108,6 +108,23 @@ export const consultations = pgTable(
   })
 )
 
+export const contactInquiries = pgTable(
+  "contact_inquiries",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    firstName: varchar("first_name", { length: 100 }).notNull(),
+    lastName: varchar("last_name", { length: 100 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 50 }).notNull(),
+    message: text("message").notNull(),
+    isRead: boolean("is_read").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    isReadIdx: index("contact_inquiries_is_read_idx").on(table.isRead),
+  })
+)
+
 export type Consultation = typeof consultations.$inferSelect
 export type NewConsultation = typeof consultations.$inferInsert
 

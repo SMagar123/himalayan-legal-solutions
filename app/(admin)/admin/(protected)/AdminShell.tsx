@@ -4,13 +4,12 @@ import { useState } from "react"
 import { motion } from "motion/react"
 import { AdminSidebar } from "./sidebar"
 
-export function AdminShell({
-  children,
-  unreadCount,
-}: {
+interface Props {
   children: React.ReactNode
-  unreadCount: number
-}) {
+  unreadCounts: { consultations: number; inquiries: number }
+}
+
+export function AdminShell({ children, unreadCounts }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
@@ -18,7 +17,7 @@ export function AdminShell({
       <AdminSidebar
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
-        unreadCount={unreadCount}
+        unreadCounts={unreadCounts}
       />
       <motion.main
         animate={{ marginLeft: isCollapsed ? 80 : 256 }}
