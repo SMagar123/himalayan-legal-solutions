@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation" // ✅ Import usePathname
+import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "motion/react"
 import { logoutAction } from "@/app/(admin)/admin/login/actions"
 import {
@@ -15,6 +15,7 @@ import {
   ChevronRight,
   Settings,
   Mail,
+  MessageSquare,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -27,20 +28,29 @@ const navItems = [
     href: "/admin/consultations",
     label: "Consultations",
     icon: Mail,
-    showBadge: true,
+    badgeKey: "consultations" as const,
+  },
+  {
+    href: "/admin/inquiries",
+    label: "Inquiries",
+    icon: MessageSquare,
+    badgeKey: "inquiries" as const,
   },
 ]
 
 interface AdminSidebarProps {
   isCollapsed: boolean
   setIsCollapsed: (value: boolean) => void
-  unreadCount: number
+  unreadCounts: {
+    consultations: number
+    inquiries: number
+  }
 }
 
 export function AdminSidebar({
   isCollapsed,
   setIsCollapsed,
-  unreadCount,
+  unreadCounts,
 }: AdminSidebarProps) {
   const pathname = usePathname()
 
@@ -50,6 +60,7 @@ export function AdminSidebar({
       transition={{ duration: 0.3, ease: "easeInOut" }}
       className="fixed top-0 left-0 z-40 flex h-screen flex-col overflow-visible bg-primary text-primary-foreground shadow-xl"
     >
+      {/* Toggle button (floats on the right edge) */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="absolute top-24 -right-4 z-50 flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-primary shadow-md transition-transform hover:scale-110"
@@ -62,6 +73,7 @@ export function AdminSidebar({
         )}
       </button>
 
+      {/* Logo */}
       <div
         className={cn(
           "flex h-20 items-center overflow-hidden border-b border-white/10 transition-all duration-300",
@@ -84,12 +96,13 @@ export function AdminSidebar({
         </div>
       </div>
 
+      {/* Navigation */}
       <nav className="mt-4 flex flex-1 flex-col gap-2 p-4">
         {navItems.map((item) => {
-          const hasBadge = item.showBadge && unreadCount > 0
+          const badgeCount = item.badgeKey ? unreadCounts[item.badgeKey] : 0
+          const hasBadge = badgeCount > 0
 
-          // ✅ Check if current path matches the nav item
-          // Using startsWith so nested routes like /admin/services/edit/123 also highlight "Services"
+          // Highlight current page (also matches nested routes)
           const isActive =
             pathname === item.href || pathname.startsWith(`${item.href}/`)
 
@@ -99,17 +112,16 @@ export function AdminSidebar({
               href={item.href}
               className={cn(
                 "relative flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors",
-                // ✅ Apply active styles
                 isActive ? "bg-white/20 text-white" : "hover:bg-white/10",
                 isCollapsed && "justify-center px-0"
               )}
               title={
                 isCollapsed
-                  ? `${item.label}${hasBadge ? ` (${unreadCount} new)` : ""}`
+                  ? `${item.label}${hasBadge ? ` (${badgeCount} new)` : ""}`
                   : undefined
               }
             >
-              {/* Icon with optional dot in collapsed state */}
+              {/* Icon + collapsed dot */}
               <div className="relative shrink-0">
                 <item.icon className="h-5 w-5" />
                 {isCollapsed && hasBadge && (
@@ -117,6 +129,7 @@ export function AdminSidebar({
                 )}
               </div>
 
+              {/* Expanded label + badge pill */}
               <AnimatePresence>
                 {!isCollapsed && (
                   <motion.span
@@ -128,7 +141,7 @@ export function AdminSidebar({
                     <span>{item.label}</span>
                     {hasBadge && (
                       <span className="ml-2 inline-flex min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                        {unreadCount > 99 ? "99+" : unreadCount}
+                        {badgeCount > 99 ? "99+" : badgeCount}
                       </span>
                     )}
                   </motion.span>

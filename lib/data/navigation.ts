@@ -21,7 +21,6 @@ export const navItems: NavItem[] = [
       },
     ],
   },
-  { title: "Publications", href: "/publications" },
   {
     title: "Services",
     submenu: [
@@ -40,5 +39,6 @@ export const navItems: NavItem[] = [
       { title: "Intellectual Property", href: "/practice-area/ip" },
     ],
   },
+  { title: "Publications", href: "/publications" },
   { title: "Contact", href: "/contact" },
 ]
