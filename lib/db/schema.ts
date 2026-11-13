@@ -31,8 +31,10 @@ export const practiceAreas = pgTable(
     slug: varchar("slug", { length: 255 }).notNull().unique(),
     title: varchar("title", { length: 255 }).notNull(),
     excerpt: text("excerpt"),
-    content: text("content"),
-    imageUrl: varchar("image_url", { length: 500 }),
+    content: text("content"), // BlockNote JSON
+    coverImage: varchar("cover_image", { length: 500 }),
+    seoTitle: varchar("seo_title", { length: 255 }),
+    seoDescription: text("seo_description"),
     isPublished: boolean("is_published").default(false).notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
