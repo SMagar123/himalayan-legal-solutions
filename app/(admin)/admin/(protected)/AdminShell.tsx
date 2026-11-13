@@ -4,12 +4,22 @@ import { useState } from "react"
 import { motion } from "motion/react"
 import { AdminSidebar } from "./sidebar"
 
-export function AdminShell({ children }: { children: React.ReactNode }) {
+export function AdminShell({
+  children,
+  unreadCount,
+}: {
+  children: React.ReactNode
+  unreadCount: number
+}) {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
   return (
     <div className="flex min-h-screen bg-muted/20">
-      <AdminSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      <AdminSidebar
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+        unreadCount={unreadCount}
+      />
       <motion.main
         animate={{ marginLeft: isCollapsed ? 80 : 256 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}

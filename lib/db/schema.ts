@@ -84,6 +84,33 @@ export const services = pgTable(
   })
 )
 
+export const consultations = pgTable(
+  "consultations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    firstName: varchar("first_name", { length: 100 }).notNull(),
+    lastName: varchar("last_name", { length: 100 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 50 }).notNull(),
+    company: varchar("company", { length: 255 }),
+    serviceId: uuid("service_id").references(() => services.id, {
+      onDelete: "set null",
+    }),
+    otherSubject: varchar("other_subject", { length: 255 }),
+    message: text("message").notNull(),
+    status: varchar("status", { length: 20 }).default("new").notNull(),
+    isRead: boolean("is_read").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    statusIdx: index("consultations_status_idx").on(table.status),
+    createdAtIdx: index("consultations_created_at_idx").on(table.createdAt),
+  })
+)
+
+export type Consultation = typeof consultations.$inferSelect
+export type NewConsultation = typeof consultations.$inferInsert
+
 export type Service = typeof services.$inferSelect
 export type NewService = typeof services.$inferInsert
 
