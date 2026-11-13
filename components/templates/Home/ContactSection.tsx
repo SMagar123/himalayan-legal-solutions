@@ -1,15 +1,87 @@
 "use client"
 
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { motion } from "motion/react"
+import { useActionState } from "react"
+import { useFormStatus } from "react-dom"
+import { toast } from "sonner"
+import { CheckCircle2, AlertCircle, Send } from "lucide-react"
 import { contactData } from "@/lib/data/contact-data"
 import { containerVariants, itemVariants } from "@/lib/animations"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { cn } from "@/lib/utils"
+import { submitContactAction } from "@/app/(public)/contact/actions"
+
+const MESSAGE_MAX = 5000
+const MESSAGE_MIN = 10
+
+function SubmitButton({ label }: { label: string }) {
+  const { pending } = useFormStatus()
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      className="mt-2 h-14 w-full rounded-xl bg-primary text-lg font-bold text-white transition-all duration-300 hover:bg-primary/90"
+    >
+      {pending ? (
+        <>
+          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          Sending...
+        </>
+      ) : (
+        <>
+          {label} <Send className="ml-2 h-4 w-4" />
+        </>
+      )}
+    </Button>
+  )
+}
 
 export function ContactSection() {
+  const [state, formAction] = useActionState(submitContactAction, null)
+  const [messageLength, setMessageLength] = useState(0)
+  const formRef = useRef<HTMLFormElement>(null)
+  const bannerRef = useRef<HTMLDivElement>(null)
+
+  // Success: toast + reset + show banner
+  useEffect(() => {
+    if (state?.success) {
+      toast.success("Thank you! We've received your message.")
+      formRef.current?.reset()
+      setMessageLength(0)
+    }
+  }, [state])
+
+  // Error: toast + scroll to banner
+  useEffect(() => {
+    if (state?.error) {
+      toast.error("Submission failed", { description: state.error })
+      bannerRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+    }
+  }, [state])
+
+  // Native browser validation fallback
+  const handleInvalid = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const firstInvalid = e.currentTarget.querySelector(
+      ":invalid"
+    ) as HTMLElement
+    if (firstInvalid) {
+      firstInvalid.focus()
+      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" })
+      toast.error("Please fill in all required fields.")
+    }
+  }
+
+  const remaining = MESSAGE_MAX - messageLength
+  const isNearLimit = remaining <= 500 && remaining > 0
+  const isAtLimit = remaining <= 0
+  const isTooShort = messageLength > 0 && messageLength < MESSAGE_MIN
+
   return (
     <section className="overflow-hidden bg-white py-24">
       <div className="container mx-auto px-4 md:px-8">
@@ -32,7 +104,6 @@ export function ContactSection() {
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
-            {/* Optional: Add a subtle dark overlay if the image is too bright */}
             <div className="absolute inset-0 bg-black/5" />
           </motion.div>
 
@@ -42,7 +113,7 @@ export function ContactSection() {
             className="flex flex-col justify-center rounded-3xl border border-gray-200 bg-white p-8 shadow-sm md:p-10"
           >
             {/* Header */}
-            <div className="mb-10 text-center">
+            <div className="mb-8 text-center">
               <h2 className="mb-4 text-3xl font-bold text-primary md:text-4xl">
                 {contactData.title}
               </h2>
@@ -51,95 +122,195 @@ export function ContactSection() {
               </p>
             </div>
 
+            {/* Success / Error banner — anchor for scroll */}
+            <div ref={bannerRef}>
+              {state?.success && (
+                <div className="mb-6 flex items-start gap-3 rounded-xl border border-green-200 bg-green-50 p-4">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" />
+                  <div>
+                    <p className="font-semibold text-green-800">Thank you!</p>
+                    <p className="text-sm text-green-700">
+                      Your message has been received. We&apos;ll get back to you
+                      shortly.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {state?.error && (
+                <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
+                  <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
+                  <div>
+                    <p className="font-semibold text-red-800">
+                      Something went wrong
+                    </p>
+                    <p className="text-sm text-red-700">{state.error}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Form */}
             <form
+              ref={formRef}
+              action={formAction}
+              onInvalid={handleInvalid}
               className="flex flex-col gap-6"
-              onSubmit={(e) => e.preventDefault()}
             >
-              {/* Top Row: First & Last Name */}
+              {/* First & Last Name */}
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="flex flex-col gap-2">
                   <Label
                     htmlFor="firstName"
                     className="text-base font-bold text-gray-900"
                   >
-                    {contactData.form.firstName}
+                    {contactData.form.firstName} *
                   </Label>
                   <Input
                     id="firstName"
-                    placeholder="Your full name"
+                    name="firstName"
+                    required
+                    placeholder="Your first name"
                     className="h-12 rounded-xl border-gray-200 bg-white placeholder:text-gray-400 focus-visible:ring-primary/20"
+                    aria-invalid={!!state?.fieldErrors?.firstName}
                   />
+                  {state?.fieldErrors?.firstName && (
+                    <p className="text-sm text-red-500">
+                      {state.fieldErrors.firstName[0]}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label
                     htmlFor="lastName"
                     className="text-base font-bold text-gray-900"
                   >
-                    {contactData.form.lastName}
+                    {contactData.form.lastName} *
                   </Label>
                   <Input
                     id="lastName"
-                    placeholder="Your Email Address"
+                    name="lastName"
+                    required
+                    placeholder="Your last name"
                     className="h-12 rounded-xl border-gray-200 bg-white placeholder:text-gray-400 focus-visible:ring-primary/20"
+                    aria-invalid={!!state?.fieldErrors?.lastName}
                   />
+                  {state?.fieldErrors?.lastName && (
+                    <p className="text-sm text-red-500">
+                      {state.fieldErrors.lastName[0]}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              {/* Middle Row: Phone & Email */}
+              {/* Phone & Email */}
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="flex flex-col gap-2">
                   <Label
                     htmlFor="phone"
                     className="text-base font-bold text-gray-900"
                   >
-                    {contactData.form.phone}
+                    {contactData.form.phone} *
                   </Label>
                   <Input
                     id="phone"
+                    name="phone"
                     type="tel"
-                    placeholder="Your full name"
+                    required
+                    placeholder="Your phone number"
                     className="h-12 rounded-xl border-gray-200 bg-white placeholder:text-gray-400 focus-visible:ring-primary/20"
+                    aria-invalid={!!state?.fieldErrors?.phone}
                   />
+                  {state?.fieldErrors?.phone && (
+                    <p className="text-sm text-red-500">
+                      {state.fieldErrors.phone[0]}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label
                     htmlFor="email"
                     className="text-base font-bold text-gray-900"
                   >
-                    {contactData.form.email}
+                    {contactData.form.email} *
                   </Label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
-                    placeholder="Your Email Address"
+                    required
+                    placeholder="your@email.com"
                     className="h-12 rounded-xl border-gray-200 bg-white placeholder:text-gray-400 focus-visible:ring-primary/20"
+                    aria-invalid={!!state?.fieldErrors?.email}
                   />
+                  {state?.fieldErrors?.email && (
+                    <p className="text-sm text-red-500">
+                      {state.fieldErrors.email[0]}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              {/* Bottom Row: Details (Textarea) */}
+              {/* Message with counter */}
               <div className="flex flex-col gap-2">
-                <Label
-                  htmlFor="details"
-                  className="text-base font-bold text-gray-900"
-                >
-                  {contactData.form.details}
-                </Label>
+                <div className="flex items-center justify-between">
+                  <Label
+                    htmlFor="message"
+                    className="text-base font-bold text-gray-900"
+                  >
+                    {contactData.form.details} *
+                  </Label>
+                  <span
+                    className={cn(
+                      "text-xs font-medium tabular-nums",
+                      isAtLimit
+                        ? "text-red-600"
+                        : isNearLimit
+                          ? "text-amber-600"
+                          : "text-gray-400"
+                    )}
+                  >
+                    {messageLength.toLocaleString()} /{" "}
+                    {MESSAGE_MAX.toLocaleString()}
+                  </span>
+                </div>
                 <Textarea
-                  id="details"
-                  placeholder="Write something....."
-                  className="min-h-[140px] resize-none rounded-xl border-gray-200 bg-white py-3 placeholder:text-gray-400 focus-visible:ring-primary/20"
+                  id="message"
+                  name="message"
+                  required
+                  maxLength={MESSAGE_MAX}
+                  onChange={(e) => setMessageLength(e.target.value.length)}
+                  placeholder="Write something..."
+                  className={cn(
+                    "min-h-[140px] resize-none rounded-xl border-gray-200 bg-white py-3 placeholder:text-gray-400 focus-visible:ring-primary/20",
+                    isAtLimit && "border-red-300 focus-visible:ring-red-200"
+                  )}
+                  aria-invalid={!!state?.fieldErrors?.message}
                 />
+                {isTooShort && !state?.fieldErrors?.message && (
+                  <p className="text-xs text-amber-600">
+                    {MESSAGE_MIN - messageLength} more characters needed (min{" "}
+                    {MESSAGE_MIN}).
+                  </p>
+                )}
+                {isNearLimit && (
+                  <p className="text-xs text-amber-600">
+                    {remaining.toLocaleString()} characters remaining.
+                  </p>
+                )}
+                {isAtLimit && (
+                  <p className="text-xs text-red-600">
+                    Character limit reached. Please trim your message.
+                  </p>
+                )}
+                {state?.fieldErrors?.message && (
+                  <p className="text-sm text-red-500">
+                    {state.fieldErrors.message[0]}
+                  </p>
+                )}
               </div>
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                className="mt-2 h-14 w-full rounded-xl bg-primary text-lg font-bold text-white transition-all duration-300 hover:bg-primary/90"
-              >
-                {contactData.form.buttonText}
-              </Button>
+              <SubmitButton label={contactData.form.buttonText} />
             </form>
           </motion.div>
         </motion.div>
