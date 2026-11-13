@@ -64,6 +64,29 @@ export const publications = pgTable(
   })
 )
 
+export const services = pgTable(
+  "services",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    title: varchar("title", { length: 255 }).notNull(),
+    excerpt: text("excerpt"),
+    content: text("content"),
+    coverImage: varchar("cover_image", { length: 500 }),
+    seoTitle: varchar("seo_title", { length: 255 }),
+    seoDescription: text("seo_description"),
+    isPublished: boolean("is_published").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    slugIdx: index("services_slug_idx").on(table.slug),
+  })
+)
+
+export type Service = typeof services.$inferSelect
+export type NewService = typeof services.$inferInsert
+
 export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert
 
