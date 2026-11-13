@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation" // ✅ Import usePathname
 import { motion, AnimatePresence } from "motion/react"
 import { logoutAction } from "@/app/(admin)/admin/login/actions"
 import {
@@ -13,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Settings,
+  Mail,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -21,17 +23,27 @@ const navItems = [
   { href: "/admin/services", label: "Services", icon: Settings },
   { href: "/admin/practice-areas", label: "Practice Areas", icon: BookOpen },
   { href: "/admin/publications", label: "Publications", icon: FileText },
+  {
+    href: "/admin/consultations",
+    label: "Consultations",
+    icon: Mail,
+    showBadge: true,
+  },
 ]
 
 interface AdminSidebarProps {
   isCollapsed: boolean
   setIsCollapsed: (value: boolean) => void
+  unreadCount: number
 }
 
 export function AdminSidebar({
   isCollapsed,
   setIsCollapsed,
+  unreadCount,
 }: AdminSidebarProps) {
+  const pathname = usePathname()
+
   return (
     <motion.aside
       animate={{ width: isCollapsed ? 80 : 256 }}
@@ -71,32 +83,60 @@ export function AdminSidebar({
           />
         </div>
       </div>
+
       <nav className="mt-4 flex flex-1 flex-col gap-2 p-4">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors hover:bg-white/10",
-              isCollapsed && "justify-center px-0"
-            )}
-            title={isCollapsed ? item.label : undefined}
-          >
-            <item.icon className="h-5 w-5 shrink-0" />
-            <AnimatePresence>
-              {!isCollapsed && (
-                <motion.span
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
-                  exit={{ opacity: 0, width: 0 }}
-                  className="overflow-hidden"
-                >
-                  {item.label}
-                </motion.span>
+        {navItems.map((item) => {
+          const hasBadge = item.showBadge && unreadCount > 0
+
+          // ✅ Check if current path matches the nav item
+          // Using startsWith so nested routes like /admin/services/edit/123 also highlight "Services"
+          const isActive =
+            pathname === item.href || pathname.startsWith(`${item.href}/`)
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "relative flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors",
+                // ✅ Apply active styles
+                isActive ? "bg-white/20 text-white" : "hover:bg-white/10",
+                isCollapsed && "justify-center px-0"
               )}
-            </AnimatePresence>
-          </Link>
-        ))}
+              title={
+                isCollapsed
+                  ? `${item.label}${hasBadge ? ` (${unreadCount} new)` : ""}`
+                  : undefined
+              }
+            >
+              {/* Icon with optional dot in collapsed state */}
+              <div className="relative shrink-0">
+                <item.icon className="h-5 w-5" />
+                {isCollapsed && hasBadge && (
+                  <span className="absolute -top-1 -right-1 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-primary" />
+                )}
+              </div>
+
+              <AnimatePresence>
+                {!isCollapsed && (
+                  <motion.span
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    className="flex flex-1 items-center justify-between overflow-hidden"
+                  >
+                    <span>{item.label}</span>
+                    {hasBadge && (
+                      <span className="ml-2 inline-flex min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </Link>
+          )
+        })}
       </nav>
 
       {/* Footer Actions */}
